@@ -1,212 +1,113 @@
 <?php
 	require("functions.php");
 	
+	if (!isset($_SESSION["userId"])) {
+		header("Location: login.php");
+		exit();
+	}
 	
-	$signupEmail = "";
-	$signupEmailError = "";
-	$signupPassword = "";
-	$signupPasswordError = "";
-	$signupEesnimi = "";
-	$signupEesnimiError = "";
-	$signupPerenimi = "";
-	$signupPerenimiError = "";
-	
-	$loginEmail = "";
-	$loginEmailError = "";
-	$loginPassword = "";
-	$loginPasswordError = "";
-	
-	$gender = "";
-	$genderError = "";
-	$password = "";
-	
-	
-	if (isset ($_POST["signupEmail"])) {
+	if (isset($_GET["logout"])) {
 		
-		//on olemas
-		// kas emaili väli on tühi
-		if (empty ($_POST["signupEmail"])) {
-			
-			// kui on tühi
-			$signupEmailError = "*VÃ¤li on kohustuslik!";
-			
-		} else {
-			// email on olemas ja õige
-			$signupEmail = $_POST["signupEmail"];
-			
-		}
+		session_destroy();
 		
-	} 
-	
-	if (isset ($_POST["signupPassword"])) {
-		
-		if (empty ($_POST["signupPassword"])) {
-			
-			$signupPasswordError = "*VÃ¤li on kohustuslik!";
-			
-		} else {
-			
-			// parool ei olnud tühi
-			
-			if ( strlen($_POST["signupPassword"]) < 8 ) {
-			
-				$signupPasswordError = "Parool peab olema vÃ¤hemalt 8 tÃ¤hemÃ¤rkki pikk!";
-				
-			}
-			
-		}
+		header("Location: login.php");
+		exit();
 		
 	}
 	
-	if (isset ($_POST["signupEesnimi"])) {
-		
-		//on olemas
-		// kas väli on tühi
-		if (empty ($_POST["signupEesnimi"])) {
-			
-			// kui on tühi
-			$signupEesnimiError = "*VÃ¤li on kohustuslik!";
-			
-		} else {
-			// on olemas ja õige
-			$signupEesnimi = $_POST["signupEesnimi"];
-			
-		}
-		
-	} 
-	
-	if (isset ($_POST["signupPerenimi"])) {
-		
-		//on olemas
-		// kas väli on tühi
-		if (empty ($_POST["signupPerenimi"])) {
-			
-			// kui on tühi
-			$signupPerenimiError = "*VÃ¤li on kohustuslik!";
-			
-		} else {
-			// on olemas ja õige
-			$signupPerenimi = $_POST["signupPerenimi"];
-			
-		}
-		
-	} 
-	
-	if (isset ($_POST["gender"])) {
-		if (empty ($_POST["gender"])) {
-			$genderError = "VÃ¤li on kohustuslik!";
-		} else {
-			$gender = $_POST["gender"];
-		}
-		
-	}
-	
-		
-	
-	
-	if ( $signupEmailError == "" AND
-		$signupPasswordError == ""		&&
-		isset ($_POST["signupPerenimi"]) &&
-		isset ($_POST["signupEesnimi"]) &&
-		isset ($_POST["signupEmail"]) &&
-		isset ($_POST["gender"])  &&
-		isset($_POST["signupPassword"])
-	//viga ei olnud, kõik väljad on täidetud (&&)
-	
-	){
-		
-		//vigu ei olnud, kÃµik on olemas	
-		echo "Salvestan...<br>";
-		echo "email ".$signupEmail."<br>";
-		echo "parool ".$_POST["signupPassword"]."<br>";
-		
-		$password = hash("sha512", $_POST["signupPassword"]);
-		
-		echo $password."<br>";
-		
-		signup($signupEmail, $password, $signupEesnimi, $signupPerenimi);
-		
-		
-	}
-	
-	$notice = "";
-	//kas kasutaja tahab sisse logida
-	if ( isset($_POST["loginEmail"]) && 
-		 isset($_POST["loginPassword"]) && 
-		 !empty($_POST["loginEmail"]) &&
-		 !empty($_POST["loginPassword"]) 
+	if ( isset($_POST["age"]) && 
+		 isset($_POST["color"]) && 
+		 !empty($_POST["age"]) &&
+		 !empty($_POST["color"]) 
 	) {
 		
-		$notice = login($_POST["loginEmail"], $_POST["loginPassword"]);
 		
+		$color = cleanInput($_POST["color"]);
+		
+		saveEvent(cleanInput($_POST["age"]), $color);
 	}
 	
+	$people = getAllPeople();
 	
+	echo "<pre>";
+	var_dump($people[5]);
+	echo "</pre>";
 ?>
-<!DOCTYPE html>
+<h1>Leht</h1>
 
-<html>
-	<head>
-		<title>Sisselogimine</title>
-	</head>
-	
-	<body>
-	
-	<center>
-	
-	<h1>Logi sisse</h1>
-		<p style="color:red;"></p>
-		<form method="POST" >
-			
-			<label>E-post</label><br>
-			<input name="loginEmail" type="email">
-			
-			<br><br>
+<?php //echo$_SESSION["userEmail"];?>
 
-			<input name="loginPassword" placeholder="Parool" type="password">
-			
-			<br><br>
-			
-			<input type="submit" value="Logi sisse">	
-			
-			<h1>Loo kasutaja</h1
-			
-			<label>E-post</label><br>
-			<input name="signupEmail" placeholder="Email" type="email" value="<?=$signupEmail;?>"> <?php echo $signupEmailError; ?>
-			
-			<br><br>
-			
-			<label>Eesnimi</label><br>
-			<input name="signupEesnimi" placeholder="Eesnimi" type="eesnimi" value="<?=$signupEesnimi;?>"> <?php echo $signupEesnimiError; ?>
-			
-			<br><br>
-			
-			<label>Perekonnanimi</label><br>
-			<input name="signupPerenimi" placeholder="Perekonnanimi" type="perenimi" value="<?=$signupPerenimi;?>"> <?php echo $signupPerenimiError; ?>
-			
-			<br><br>
+<?=$_SESSION["userEmail"];?>
 
-			<input name="signupPassword" placeholder="Parool" type="password"> <?php echo $signupPasswordError; ?>
-			
-			<br><br>
-					
-			<?php if ($gender == "female") { ?>
-				<input type="radio" name="gender" value="female" checked> female<br><?php } else { ?>
-				<input type="radio" name="gender" value="female" > female<br><?php } ?>
-			
-			<?php if ($gender == "male") { ?>
-				<input type="radio" name="gender" value="male" checked> male<br><?php } else { ?>
-				<input type="radio" name="gender" value="male" > male<br><?php } ?>
-			
-			<input type="submit" value="Loo kasutaja">
+<p>
+	Tere tulemast <?=$_SESSION["userEmail"];?>!
+	<a href="?logout=1">logi välja</a>
+</p>
+
+<h2>Salvesta sündmus</h2>
+<form method="POST" >
+	
+	<label>Vanus</label><br>
+	<input name="age" type="number">
+	
+	<br><br>
+	<label>Värv</label><br>
+	<input name="color" type="color">
+	
+	<br><br>
+	
+	<input type="submit" value="Salvesta">
+
+</form>
+
+<h2>Arhiiv</h2>
+
+<?php 
+
+	
+	$html = "<table>";
+	
+		$html .= "<tr>";
+			$html .= "<th>ID</th>";
+			$html .= "<th>Vanus</th>";
+			$html .= "<th>Värv</th>";
+		$html .= "</tr>";
 		
-		</form>
+		//iga liikme kohta massiivis
+		foreach ($people as $p) {
+			
+			$html .= "<tr>";
+				$html .= "<td>".$p->id."</td>";
+				$html .= "<td>".$p->age."</td>";
+				$html .= "<td>".$p->lightColor."</td>";
+			$html .= "</tr>";
+		
+		}
+		
+	$html .= "</table>";
 	
-	
-	
-	
-	</center>
-	
-	</body>
-	
-	
+	echo $html;
+
+
+
+
+	foreach($people as $p) {
+		
+		$style = "
+		
+		    background-color:".$p->lightColor.";
+			width: 40px;
+			height: 40px;
+			border-radius: 20px;
+			text-align: center;
+			line-height: 39px;
+			float: left;
+			margin: 10px;
+		";
+				
+		echo "<p style ='  ".$style."  '>".$p->age."</p>";
+		
+	}
+
+
+?>
