@@ -1,5 +1,4 @@
 <?php
-
 	require("functions.php");
 	
 	
@@ -25,14 +24,14 @@
 	if (isset ($_POST["signupEmail"])) {
 		
 		//on olemas
-		// kas emaili v�li on t�hi
+		// kas emaili väli on tühi
 		if (empty ($_POST["signupEmail"])) {
 			
-			// kui on t�hi
-			$signupEmailError = "*Väli on kohustuslik!";
+			// kui on tühi
+			$signupEmailError = "*VÃ¤li on kohustuslik!";
 			
 		} else {
-			// email on olemas ja �ige
+			// email on olemas ja õige
 			$signupEmail = $_POST["signupEmail"];
 			
 		}
@@ -43,15 +42,15 @@
 		
 		if (empty ($_POST["signupPassword"])) {
 			
-			$signupPasswordError = "*Väli on kohustuslik!";
+			$signupPasswordError = "*VÃ¤li on kohustuslik!";
 			
 		} else {
 			
-			// parool ei olnud t�hi
+			// parool ei olnud tühi
 			
 			if ( strlen($_POST["signupPassword"]) < 8 ) {
 			
-				$signupPasswordError = "Parool peab olema vähemalt 8 tähemärkki pikk!";
+				$signupPasswordError = "Parool peab olema vÃ¤hemalt 8 tÃ¤hemÃ¤rkki pikk!";
 				
 			}
 			
@@ -62,14 +61,14 @@
 	if (isset ($_POST["signupEesnimi"])) {
 		
 		//on olemas
-		// kas v�li on t�hi
+		// kas väli on tühi
 		if (empty ($_POST["signupEesnimi"])) {
 			
-			// kui on t�hi
-			$signupEesnimiError = "*Väli on kohustuslik!";
+			// kui on tühi
+			$signupEesnimiError = "*VÃ¤li on kohustuslik!";
 			
 		} else {
-			// on olemas ja �ige
+			// on olemas ja õige
 			$signupEesnimi = $_POST["signupEesnimi"];
 			
 		}
@@ -79,14 +78,14 @@
 	if (isset ($_POST["signupPerenimi"])) {
 		
 		//on olemas
-		// kas v�li on t�hi
+		// kas väli on tühi
 		if (empty ($_POST["signupPerenimi"])) {
 			
-			// kui on t�hi
-			$signupPerenimiError = "*Väli on kohustuslik!";
+			// kui on tühi
+			$signupPerenimiError = "*VÃ¤li on kohustuslik!";
 			
 		} else {
-			// on olemas ja �ige
+			// on olemas ja õige
 			$signupPerenimi = $_POST["signupPerenimi"];
 			
 		}
@@ -95,7 +94,7 @@
 	
 	if (isset ($_POST["gender"])) {
 		if (empty ($_POST["gender"])) {
-			$genderError = "Väli on kohustuslik!";
+			$genderError = "VÃ¤li on kohustuslik!";
 		} else {
 			$gender = $_POST["gender"];
 		}
@@ -112,11 +111,11 @@
 		isset ($_POST["signupEmail"]) &&
 		isset ($_POST["gender"])  &&
 		isset($_POST["signupPassword"])
-	//viga ei olnud, k�ik v�ljad on t�idetud (&&)
+	//viga ei olnud, kõik väljad on täidetud (&&)
 	
 	){
 		
-		//vigu ei olnud, kõik on olemas	
+		//vigu ei olnud, kÃµik on olemas	
 		echo "Salvestan...<br>";
 		echo "email ".$signupEmail."<br>";
 		echo "parool ".$_POST["signupPassword"]."<br>";
@@ -143,8 +142,6 @@
 	}
 	
 	
-
-
 ?>
 <!DOCTYPE html>
 
@@ -153,7 +150,7 @@
 		<title>Sisselogimine</title>
 	</head>
 	
-	<body background="https://s.yimg.com/ny/api/res/1.2/Cc0nt_iFgSCb8W_7D1HFpw--/YXBwaWQ9aGlnaGxhbmRlcjtzbT0xO3c9ODAw/http://media.zenfs.com/en/homerun/feed_manager_auto_publish_494/aa2fe58bee3bd79cb1475360afcf981e">
+	<body>
 	
 	<center>
 	
@@ -175,17 +172,17 @@
 			<h1>Loo kasutaja</h1
 			
 			<label>E-post</label><br>
-			<input name="signupEmail" type="email" value="<?=$signupEmail;?>"> <?php echo $signupEmailError; ?>
+			<input name="signupEmail" placeholder="Email" type="email" value="<?=$signupEmail;?>"> <?php echo $signupEmailError; ?>
 			
 			<br><br>
 			
 			<label>Eesnimi</label><br>
-			<input name="signupEesnimi" type="eesnimi" value="<?=$signupEesnimi;?>"> <?php echo $signupEesnimiError; ?>
+			<input name="signupEesnimi" placeholder="Eesnimi" type="eesnimi" value="<?=$signupEesnimi;?>"> <?php echo $signupEesnimiError; ?>
 			
 			<br><br>
 			
 			<label>Perekonnanimi</label><br>
-			<input name="signupPerenimi" type="perenimi" value="<?=$signupPerenimi;?>"> <?php echo $signupPerenimiError; ?>
+			<input name="signupPerenimi" placeholder="Perekonnanimi" type="perenimi" value="<?=$signupPerenimi;?>"> <?php echo $signupPerenimiError; ?>
 			
 			<br><br>
 
